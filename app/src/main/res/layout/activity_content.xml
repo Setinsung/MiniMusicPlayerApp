@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/bg">
+
+    <RelativeLayout
+        android:id="@+id/music_bottom_ctl"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:background="#33EEEEEE">
+
+        <!-- 音乐图标 -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#9933FA" />
+
+        <ImageView
+            android:id="@+id/music_bottom_ico"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/song_bg_ico"
+            android:src="@drawable/song_ico"
+            />
+        <ImageView
+            android:id="@+id/music_bottom_img"
+            android:layout_width="67dp"
+            android:layout_height="67dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/music_bottom_ico"
+            android:visibility="gone"
+            />
+        <!-- 歌曲名称 -->
+        <com.hdu.component.ScrollingTextView
+            android:id="@+id/music_bottom_song_name"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@id/music_bottom_img"
+            android:text="none"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+
+            />
+
+        <!-- 歌手名称 -->
+        <TextView
+            android:id="@+id/music_bottom_singer_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="none"
+            android:textSize="12sp"
+            android:layout_below="@id/music_bottom_song_name"
+            android:layout_alignStart="@id/music_bottom_song_name"
+            android:layout_marginTop="8dp"/>
+
+        <!-- 播放器操作按钮 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            >
+            <ImageView
+                android:id="@+id/music_bottom_op_download"
+                android:layout_centerVertical="true"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/op_download"
+                android:background="@drawable/circle_border"
+                android:layout_marginRight="10dp"
+                android:visibility="visible"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+            <ImageView
+                android:id="@+id/music_bottom_op_next"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/op_next"
+                android:layout_marginRight="10dp"
+                app:layout_constraintEnd_toStartOf="@id/music_bottom_op_download"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+
+            <ImageView
+                android:id="@+id/music_bottom_op_play"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/op_play"
+                android:layout_marginRight="10dp"
+                app:layout_constraintEnd_toStartOf="@id/music_bottom_op_next"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+
+            <ImageView
+                android:id="@+id/music_bottom_op_last"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/op_last"
+                android:layout_marginRight="10dp"
+                app:layout_constraintEnd_toStartOf="@id/music_bottom_op_play"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/music_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/music_bottom_ctl" />
+
+</RelativeLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
