@@ -4,12 +4,12 @@ plugins {
 
 android {
     namespace = "com.hdu"
-    compileSdk = 34
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "com.hdu"
         minSdk = 24
-        targetSdk = 34
+        compileSdk = 33
         versionCode = 1
         versionName = "1.0"
 
@@ -34,8 +34,9 @@ android {
 dependencies {
 
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
+    implementation("com.google.android.material:material:1.8.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    //noinspection GradleCompatible
     implementation ("com.android.support:support-v4:23.0.0")
     implementation("com.squareup.okhttp3:okhttp:4.1.0")
     implementation("com.google.code.gson:gson:2.8.6")

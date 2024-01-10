@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                search_txt = newText;
                 return false;
             }
         });
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         enter_btn.setOnClickListener(view -> {
             if(music_mode == 1 && search_txt.equals("")){
                 Toast.makeText(MainActivity.this, "未输入任何搜索文本", Toast.LENGTH_SHORT).show();
+                return;
             }
             Intent intent = new Intent(MainActivity.this, ContentActivity.class);
             intent.putExtra("music_mode", music_mode);

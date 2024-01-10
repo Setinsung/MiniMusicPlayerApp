@@ -1,5 +1,7 @@
 package com.hdu;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -83,14 +85,18 @@ public class ContentActivity extends AppCompatActivity implements View.OnClickLi
 
         // 根据模式加载music数据
         if (music_mode == 1 && !search_txt.equals("")) {
-            // 为RecycleView添加滚动到底部翻页
+            // 滚动到底部翻页
             music_list_rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                     super.onScrolled(recyclerView, dx, dy);
                     LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
                     int lastCompletelyVisibleItemPosition = layoutManager.findLastCompletelyVisibleItemPosition();
-                    if (!req_isfinish && lastCompletelyVisibleItemPosition == layoutManager.getItemCount() - 1) {
+                    if (req_isfinish) {
+                        Toast.makeText(ContentActivity.this, "没有更多结果了！", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (lastCompletelyVisibleItemPosition == layoutManager.getItemCount() - 1) {
                         //滑动到底部
                         page++;
                         loadWebMusicData();
@@ -133,7 +139,7 @@ public class ContentActivity extends AppCompatActivity implements View.OnClickLi
 
         if (musicBean.getImg() != null)
 //            bottom_music_img_iv.setImageURL(musicBean.getImg());
-        Glide.with(this).load(musicBean.getImg()).into(bottom_music_img_iv);
+            Glide.with(this).load(musicBean.getImg()).into(bottom_music_img_iv);
 
         else
             Glide.with(this).load(R.drawable.music_item_img_default).into(bottom_music_img_iv);
@@ -201,10 +207,6 @@ public class ContentActivity extends AppCompatActivity implements View.OnClickLi
      * 加载网络请求得到的音乐数据到集合
      */
     private void loadWebMusicData() {
-        if (req_isfinish) {
-            Toast.makeText(ContentActivity.this, "没有更多结果了！", Toast.LENGTH_SHORT).show();
-            return;
-        }
         FreeMusicAPI.GetFreeMusics(search_txt, page, new ApiResponseCallback<FreeMusicAPIResp>() {
             @Override
             public void onSuccess(FreeMusicAPIResp response) {
@@ -246,16 +248,23 @@ public class ContentActivity extends AppCompatActivity implements View.OnClickLi
 
     private void downloadSelectedMusic(String url, String name) {
         Context context = this;
+        copyStr(url);
         new AndroidDownloadManager(context, url, name + ".mp3")
                 .setListener(new AndroidDownloadManagerListener() {
                     @Override
                     public void onPrepare() {
                         Log.d("Test", "onPrepare");
+                        runOnUiThread(() -> {
+                            Toast.makeText(ContentActivity.this, "下载准备中，已将链接复制到剪贴板...", Toast.LENGTH_SHORT).show();
+                        });
                     }
 
                     @Override
                     public void onSuccess(String path) {
                         Log.d("Test", "onSuccess >>>>" + path);
+                        runOnUiThread(() -> {
+                            Toast.makeText(ContentActivity.this, "下载成功，文件路径：" + path, Toast.LENGTH_SHORT).show();
+                        });
                         MediaScannerConnection.scanFile(
                                 context,
                                 new String[]{path},  // 你下载的文件的路径
@@ -269,6 +278,9 @@ public class ContentActivity extends AppCompatActivity implements View.OnClickLi
 
                     @Override
                     public void onFailed(Throwable throwable) {
+                        runOnUiThread(() -> {
+                            Toast.makeText(ContentActivity.this, "下载失败，error:" + throwable.toString(), Toast.LENGTH_SHORT).show();
+                        });
                         Log.e("Test", "onFailed", throwable);
                     }
                 })
@@ -384,6 +396,25 @@ public class ContentActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    /**
+     * 复制内容到剪切板
+     *
+     * @param copyStr
+     * @return
+     */
+    private boolean copyStr(String copyStr) {
+        try {
+            //获取剪贴板管理器
+            ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            // 创建普通字符型ClipData
+            ClipData mClipData = ClipData.newPlainText("Label", copyStr);
+            // 将ClipData内容放到系统剪贴板里。
+            cm.setPrimaryClip(mClipData);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
     @Override
     protected void onDestroy() {
